@@ -93,3 +93,29 @@ class RNA_Molecule:
         except FileNotFoundError: # En cas d'erreur de lecture du fichier, on affiche un message d'erreur et on termine le programme avec un code de sortie pour indiquer une erreur.
             print(f"Error: The file '{file_path}' is not found.")
             sys.exit(1)
+
+    def check_hydrogen_bond(self, nuc1, nuc2):
+        """On compte le nombre de liaisons hydrogènes valides entre deux nucléotides."""
+        bonds_count = 0
+        
+        """On récupère les rôles (donneurs / accepteurs) propres à chaque type de nucléotide."""
+        sites1 = BOND_SITES[nuc1.type] # On accède au dictionnaire BOND_SITES pour obtenir les sites de liaison du nucléotide 1 en fonction de son type (A, U, G, C).
+        sites2 = BOND_SITES[nuc2.type]
+
+        """Possibilité 1 : Donneur du nuc1 vers accepteur du nuc2"""
+        for d_name in sites1['donors']:
+            for a_name in sites2['acceptors']:
+                if d_name in nuc1.atoms and a_name in nuc2.atoms: # On vérifie que les atomes donneurs et accepteurs existent bien dans les nucléotides respectifs avant de calculer la distance.
+                    dist = nuc1.atoms[d_name].distance_to(nuc2.atoms[a_name]) # On calcule la distance entre le donneur du nucléotide 1 et l'accepteur du nucléotide 2 en utilisant la méthode distance_to de la classe Atom.
+                    if DIST_MIN <= dist <= DIST_MAX:
+                        bonds_count += 1
+
+        """Possibilité 2 : Donneur du nuc2 vers accepteur du nuc1"""
+        for d_name in sites2['donors']:
+            for a_name in sites1['acceptors']:
+                if d_name in nuc2.atoms and a_name in nuc1.atoms:
+                    dist = nuc2.atoms[d_name].distance_to(nuc1.atoms[a_name])
+                    if DIST_MIN <= dist <= DIST_MAX:
+                        bonds_count += 1
+
+        return bonds_count
