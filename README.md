@@ -56,7 +56,7 @@ Pour éliminer les **artefacts (faux couples)** que j'ai pu constater, deux filt
 
 - Un premier qui **interdit à deux nucléotides trop proches de s'apparier** (il faut au moins 3 nucléotides d'écart entre eux). La molécule n'a ni la **l'espace** ni la **fléxibilité** pour faire un virage aussi serré et apparié deux nucléotides trop proche. 
 
-- Un deuxième qui supprime les **couples isolé**. Si une parenthèe (paire) est toute seule, elle est remplacée par un point. **Il faut au moins un voisin apparié juste à coté pour avoir un liaison stable**.  
+- Un deuxième qui supprime les **couples isolé**. Si une parenthèe (paire) est toute seule, elle est remplacée par un point. **Il faut au moins un voisin apparié juste à coté pour avoir un structure (appariement) stable**.  
 
 ## **Prérequis et lancement du script**
 
