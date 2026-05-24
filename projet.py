@@ -135,11 +135,12 @@ class RNA_molecule:
                 """On Vérifie si le couple est autorisé (CG, AU, GU)"""
                 pair_type = (nuc1.type, nuc2.type)
                 if pair_type in REQUIRED_BONDS:
-                    nb_bonds = self.check_hydrogen_bond(nuc1, nuc2)
+                    if (id2 - id1) > 3: # On impose une distance minimale de 4 nucléotides entre les deux pour éviter les appariements locaux qui ne sont pas réalistes pour la structure secondaire de l'ARN.
+                        nb_bonds = self.check_hydrogen_bond(nuc1, nuc2)
 
-                    if nb_bonds >= REQUIRED_BONDS[pair_type]: # Si le nombre de liaisons trouvées correspond au critère requis pour ce type de paire, on les considère comme appariés et on les stocke dans le dictionnaire des paires.
-                        pairs[id1] = id2
-                        pairs[id2] = id1
+                        if nb_bonds >= REQUIRED_BONDS[pair_type]: # Si le nombre de liaisons trouvées correspond au critère requis pour ce type de paire, on les considère comme appariés et on les stocke dans le dictionnaire des paires.
+                            pairs[id1] = id2
+                            pairs[id2] = id1
         return pairs
     
 
@@ -149,7 +150,7 @@ class RNA_molecule:
         pairs = self.find_base_pairs() # Retourne un dictionnaire des appariements trouvés.
         
         sequence = ""
-        dot_bracket = []
+        dot_bracket = [] 
 
         """Construction de la structure secondaire"""
         for res_num in sorted_ids:
