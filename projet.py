@@ -119,3 +119,28 @@ class RNA_Molecule:
                         bonds_count += 1
 
         return bonds_count
+    
+
+    def find_base_pairs(self):
+        """On parcourt toutes la molécule pour trouver les nucléotides appariés."""
+        pairs = {} # Dictionnaire pour stocker les appariements trouvés, avec comme clé l'identifiant numérique d'un nucléotide et comme valeur l'identifiant de son partenaire d'appariement.
+        sorted_ids = sorted(self.nucleotides.keys()) # On trie les identifiants numériques des nucléotides pour garantir un ordre cohérent lors de la comparaison des paires.
+        
+        """Double boucle pour comparer chaque paire de nucléotides uniques (i < j)."""
+        for i in range(len(sorted_ids)): # On parcourt les indices des nucléotides triés, en commençant par le premier (i) et en comparant avec tous les suivants (j > i) pour éviter les comparaisons redondantes et les auto-appariements.
+            for j in range(i + 1, len(sorted_ids)):
+                id1, id2 = sorted_ids[i], sorted_ids[j] # On récupère les identifiants numériques des deux nucléotides à comparer.
+                nuc1, nuc2 = self.nucleotides[id1], self.nucleotides[id2]
+                
+                """On Vérifie si le couple est autorisé (CG, AU, GU)"""
+                pair_type = (nuc1.type, nuc2.type)
+                if pair_type in REQUIRED_BONDS:
+                    nb_bonds = self.check_hydrogen_bond(nuc1, nuc2)
+
+                    if nb_bonds >= REQUIRED_BONDS[pair_type]: # Si le nombre de liaisons trouvées correspond au critère requis pour ce type de paire, on les considère comme appariés et on les stocke dans le dictionnaire des paires.
+                        pairs[id1] = id2
+                        pairs[id2] = id1
+        return pairs
+    
+
+    
