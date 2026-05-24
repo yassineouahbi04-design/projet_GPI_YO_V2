@@ -12,5 +12,7 @@ Le code est structuré en **classes** qui vont s'imbriquer comme des poupées ru
 
 - **Nucleotide** (regroupement d'atomes) : représente une **base de l'ARN (A, U, G, C)**. Elle possède un dictionnaire pour stocker tous les atomes qui la composent, permetant de retrouver un atome instantanément par son nom.
 
+- **RNA_Molecule** (regroupement de nucléotides) : représente la **molécule d'ARN complète**. Elle contient un dictionnaire de tous les nucléotides rangés par leur identifiant numérique (position dans la chaine). Elle gère la **lecture du fichier**, la **recherche des appariement** et la **génération du résultat**.
 
+## **Fonctionnement du code**
 

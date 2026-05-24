@@ -143,4 +143,27 @@ class RNA_Molecule:
         return pairs
     
 
-    
+def generate_output(self):
+        """On génère la séquence d'ARN et la notation Dot-Bracket correspondante."""
+        sorted_ids = sorted(self.nucleotides.keys()) # On trie les identifiants numériques des nucléotides pour garantir un ordre cohérent dans la séquence et la structure générées.
+        pairs = self.find_base_pairs() # Retourne un dictionnaire des appariements trouvés.
+        
+        sequence = ""
+        dot_bracket = []
+
+        """Construction de la structure secondaire"""
+        for res_num in sorted_ids:
+            sequence += self.nucleotides[res_num].type # On ajoute le type de nucléotide (A, U, G, C) à la séquence finale.
+            
+            if res_num in pairs: # Si ce nucléotide est apparié, on vérifie son partenaire d'appariement pour déterminer s'il doit être représenté par une parenthèse ouvrante ou fermante dans la notation Dot-Bracket.
+                partner_num = pairs[res_num] # On récupère l'identifiant numérique du partenaire d'appariement.
+                if res_num < partner_num: # Si l'identifiant du nucléotide actuel est inférieur à celui de son partenaire, on le représente par une parenthèse ouvrante "(" dans la notation Dot-Bracket, sinon par une parenthèse fermante ")".
+                    dot_bracket.append("(")
+                else:
+                    dot_bracket.append(")")
+            else:
+                dot_bracket.append(".") # Si le nucléotide n'est pas apparié, on le représente par un point ".". 
+
+        return sequence, "".join(dot_bracket) # On retourne la séquence d'ARN complète et la notation Dot-Bracket correspondante en joignant les éléments de la liste dot_bracket en une chaîne de caractères.
+
+
