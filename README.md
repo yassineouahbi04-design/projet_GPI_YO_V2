@@ -2,7 +2,7 @@
 
 ## **Présentation du projet**
 
-Ce projet est un script *Python* établi sur de la **programmation orientée objet**. Il a pour objectif de lire un fichier de **structure 3D** d'ARN au format **PDB** et d'en déterminer la **structure secondaire 2D**. Le script réalise sa tache en extrayant spécifiquement les nucléotides de l'ARN, puis en détectant leurs liaisons hydrogène afin de générer leur structure secondaire sous format dot-bracket.
+Ce projet est un script *Python* établi sur de la **programmation orientée objet**. Il a pour objectif de lire un fichier de **structure 3D** d'ARN au format **PDB** et d'en déterminer la **structure secondaire 2D**. Le script réalise sa tache en extrayant spécifiquement les nucléotides de l'ARN, puis en détectant les appariements afin de générer leur structure secondaire sous format Dot-Bracket.
 
 ## **Paramètrage biologiques et physique**
 
