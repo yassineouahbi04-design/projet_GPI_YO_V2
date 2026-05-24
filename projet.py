@@ -168,7 +168,7 @@ class RNA_molecule:
 
 
 # ==========================================
-# EXECUTABILITE DU SCRIPT.
+# EXECUTABILITE DU SCRIPT
 # ==========================================
 if __name__ == "__main__":
     """ On vérifie qu'un fichier a bien été passé en paramètre dans la console. """

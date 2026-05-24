@@ -4,7 +4,7 @@
 
 Ce projet est un script *Python* établi sur de la **programmation orientée objet**. Il a pour objectif de lire un fichier de **structure 3D** d'ARN au format **PDB** et d'en déterminer la **structure secondaire 2D**. Le script réalise sa tache en extrayant spécifiquement les nucléotides de l'ARN, puis en détectant leurs liaisons hydrogène afin de générer leur structure secondaire sous format dot-bracket.
 
-## **Paramètres biologiques et physique**
+## **Paramètrage biologiques et physique**
 
 Pour garantir la justesse scientifique, le script s'appuie sur des règles définies en début de fichier :
 
@@ -49,3 +49,16 @@ Une **double boucle** teste toutes les combinaisons possibles de nucléotides (s
 - **Étape 4 : Traduction textuelle (méthode generate_output)**
 
 Le script parcourt l'ARN du début à la fin pour écrire la séquence en lettres. En parallèle, il dessine la **structure en Dot-Bracket**. Si un nucléotide est seul, il écrit un point. S'il est apparié, il compare leurs positions. Le plus petit indice reçoit une parenthèse ouvrante "(" et le plus grand reçoit une parenthèse fermante ).
+
+## **Prérequis et lancement du script**
+
+- **Python 3** doit etre installé sur la machine.
+
+- Le script utilise uniquement les **modules natifs de Python** (sys et math). Aucune installation supplémentaire n'est necessaire. 
+
+- Un **fichier au format *PDB*** contenant une molécule d'ARN doit etre mis à disposition. Ce fichier doit se trouver dans le **meme dossier** que le script.  
+
+- Poour lancé le script:
+    - Ouvrir le terminal de l'appareil. 
+    - Se déplacer dans le dossier ou se trouve le script et le/les fichier(s) *PDB*. 
+    - Exécuter la commande suivant : ***python3 projet.py file_name.pdb***
