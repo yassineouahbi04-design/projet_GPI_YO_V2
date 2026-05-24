@@ -16,3 +16,20 @@ Le code est structuré en **classes** qui vont s'imbriquer comme des poupées ru
 
 ## **Fonctionnement du code**
 
+Lorsque le script est exécuté, il déroule automatiquement les étapes suivantes :
+
+- **Etape 1 : Lecture et filtrage (méthode load_pdb)** 
+
+Le script ouvre le fichier PDB et lit les lignes une par une. Il applique un **double filtre** en ne gardant que les lignes commençant par ATOM et en vérifiant que le résidu est bien de l'ARN (A, U, G, C). Il extrait ensuite les coordonnées des atomes à des positions de texte fixes (dictées par le format PDB) et crée les objets en mémoire.
+
+- **Étape 2 : Détection des liaisons (méthode check_hydrogen_bond)**
+
+Le programme compare les atomes des nucléotides deux par deux. Il regarde dans un dictionnaire de référence quels atomes sont donneurs ou accepteurs. Si la distance entre deux atomes compatibles entre dans la fourchette autorisée (DIST_MIN et DIST_MAX), la liaison est validée.
+
+- **Étape 3 : Recherche des paires de bases (méthode find_base_pairs)**
+
+Une **double boucle** compare tous les nucléotides uniques de la molécule. Si deux nucléotides forment un appariement valide (ex : $G-C$ ou $A-U$) et possèdent le nombre minimal de liaisons hydrogène requises, ils sont déclarés "appariés".
+
+- **Étape 4 : Traduction textuelle (méthode generate_output)**
+
+Le script parcourt l'ARN du début à la fin pour écrire la séquence de lettres. En parallèle, il dessine la **structure en Dot-Bracket**. Si un nucléotide est seul, il écrit un point. S'il est apparié, il compare leurs positions. Le plus petit indice reçoit une parenthèse ouvrante "(" et le plus grand reçoit une parenthèse fermante ).

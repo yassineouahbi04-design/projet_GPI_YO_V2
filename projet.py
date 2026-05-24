@@ -29,7 +29,7 @@ DIST_MIN = 2.4
 DIST_MAX = 3.6
 
 # ==========================================
-# MODELISATION DES CLASSES (Atom, Nucleotide, RNAMolecule)
+# MODELISATION DES CLASSES (Atom, Nucleotide, RNAmolecule)
 # ==========================================
 
 class Atom:
@@ -61,7 +61,7 @@ class Nucleotide:
         self.atoms[atom.name] = atom  
 
 
-class RNA_Molecule:
+class RNA_molecule:
     """On définit un objet pour gérer l'ensemble de la structure de l'ARN et ses analyses."""
     def __init__(self):
         self.nucleotides = {}   # Dictionnaire pour stocker les nucléotides de l'ARN, avec comme clé leur identifiant numérique et comme valeur l'objet Nucleotide correspondant.
@@ -143,7 +143,7 @@ class RNA_Molecule:
         return pairs
     
 
-def generate_output(self):
+    def generate_output(self):
         """On génère la séquence d'ARN et la notation Dot-Bracket correspondante."""
         sorted_ids = sorted(self.nucleotides.keys()) # On trie les identifiants numériques des nucléotides pour garantir un ordre cohérent dans la séquence et la structure générées.
         pairs = self.find_base_pairs() # Retourne un dictionnaire des appariements trouvés.
@@ -167,3 +167,24 @@ def generate_output(self):
         return sequence, "".join(dot_bracket) # On retourne la séquence d'ARN complète et la notation Dot-Bracket correspondante en joignant les éléments de la liste dot_bracket en une chaîne de caractères.
 
 
+# ==========================================
+# POINT D'ENTREE DU SCRIPT.
+# ==========================================
+if __name__ == "__main__":
+    """ On vérifie qu'un fichier a bien été passé en paramètre dans la console. """
+    if len(sys.argv) != 2:
+        print(" Error : Incorrect number of arguments.")
+        print(" User : python projet_V1.py <pdb_file>")
+        sys.exit(1)
+
+    pdb_filename = sys.argv[1]
+    
+    """ On exécute du processus """
+    rna = RNA_molecule()
+    rna.load_pdb(pdb_filename)
+    
+    seq, structure = rna.generate_output()
+    
+    """ On affiche le résultat attendu """
+    print(seq)
+    print(structure)
