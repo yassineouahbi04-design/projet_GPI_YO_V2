@@ -18,7 +18,7 @@ Le script ne valide pas n'importe quel appariement. Il reconnaît uniquement les
 
 - **Les seuils de distance (DIST_MIN, DIST_MAX)** : 
 
-La longueur moyenne d'une liaison hydrogène est d'environ 3 Ångströms. On applique une tolérance de $\pm$ 0.6 Å. Pour qu'une liaison soit valide, la distance entre l'atome donneur et l'accepteur doit impérativement être comprise entre 2.4 et 3.6 Å.
+La longueur moyenne d'une liaison hydrogène est d'environ 3 Ångströms. On applique une tolérance de $\pm$ 0.4 Å. Pour qu'une liaison soit valide, la distance entre l'atome donneur et l'accepteur doit impérativement être comprise entre 2.6 et 3.4 Å.
 
 ## **Architecture du code**
 
