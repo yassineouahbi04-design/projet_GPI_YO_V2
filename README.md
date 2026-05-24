@@ -2,7 +2,23 @@
 
 ## **Présentation du projet**
 
-Ce projet est un script *Python* établi sur de la **programmation orientée objet**. Il a pour objectif de lire un fichier de structure moléculaire 3D d'ARN au format **PDB** et d'en déterminer la **structure secondaire 2D**. Le script réalise sa tache en extrayant spécifiquement les nucléotides de l'ARN, puis en détectant leurs liaisons hydrogène afin de générer leur structure secondaire sous format dot-bracket.
+Ce projet est un script *Python* établi sur de la **programmation orientée objet**. Il a pour objectif de lire un fichier de **structure 3D** d'ARN au format **PDB** et d'en déterminer la **structure secondaire 2D**. Le script réalise sa tache en extrayant spécifiquement les nucléotides de l'ARN, puis en détectant leurs liaisons hydrogène afin de générer leur structure secondaire sous format dot-bracket.
+
+## **Paramètres biologiques et physique**
+
+Pour garantir la justesse scientifique, le script s'appuie sur des règles définies en début de fichier :
+
+- **Les sites de liaison (BOND_SITES)** :
+
+Le programme connaît la structure exacte de chaque nucléotide et sait précisément quels atomes de ces derniers peuvent agir comme donneurs ou accepteurs.
+
+- **Les paires autorisées (REQUIRED_BONDS)** : 
+
+Le script ne valide pas n'importe quel appariement. Il reconnaît uniquement les paires classiques de Watson-Crick (G-C nécessitant 3 liaisons hydrogènes, A-U nécessitant 2 liaisons hydrogènes) ainsi que la paire wobble (G-U nécessitant 2 liaisons hydrogènes).
+
+- **Les seuils de distance (DIST_MIN, DIST_MAX)** : 
+
+La longueur moyenne d'une liaison hydrogène est d'environ 3 Ångströms. On applique une tolérance de $\pm$ 0.6 Å. Pour qu'une liaison soit valide, la distance entre l'atome donneur et l'accepteur doit impérativement être comprise entre 2.4 et 3.6 Å.
 
 ## **Architecture du code**
 
@@ -24,12 +40,12 @@ Le script ouvre le fichier PDB et lit les lignes une par une. Il applique un **d
 
 - **Étape 2 : Détection des liaisons (méthode check_hydrogen_bond)**
 
-Le programme compare les atomes des nucléotides deux par deux. Il regarde dans un dictionnaire de référence quels atomes sont donneurs ou accepteurs. Si la distance entre deux atomes compatibles entre dans la fourchette autorisée (DIST_MIN et DIST_MAX), la liaison est validée.
+Le programme teste toutes les combinaisons possibles entre les atomes "Donneurs" du premier nucléotide et les atomes "Accepteurs" du second. Si la distance entre deux atomes compatibles entre dans la fourchette autorisée, la liaison est validée.
 
 - **Étape 3 : Recherche des paires de bases (méthode find_base_pairs)**
 
-Une **double boucle** compare tous les nucléotides uniques de la molécule. Si deux nucléotides forment un appariement valide (ex : $G-C$ ou $A-U$) et possèdent le nombre minimal de liaisons hydrogène requises, ils sont déclarés "appariés".
+Une **double boucle** teste toutes les combinaisons possibles de nucléotides (sans jamais tester deux fois la même paire ni comparer un nucléotide à lui-même). Si deux nucléotides forment un appariement valide (ex : $G-C$ ou $A-U$) et possèdent le nombre de liaisons hydrogène requises, ils sont considerés comme appariés.
 
 - **Étape 4 : Traduction textuelle (méthode generate_output)**
 
-Le script parcourt l'ARN du début à la fin pour écrire la séquence de lettres. En parallèle, il dessine la **structure en Dot-Bracket**. Si un nucléotide est seul, il écrit un point. S'il est apparié, il compare leurs positions. Le plus petit indice reçoit une parenthèse ouvrante "(" et le plus grand reçoit une parenthèse fermante ).
+Le script parcourt l'ARN du début à la fin pour écrire la séquence en lettres. En parallèle, il dessine la **structure en Dot-Bracket**. Si un nucléotide est seul, il écrit un point. S'il est apparié, il compare leurs positions. Le plus petit indice reçoit une parenthèse ouvrante "(" et le plus grand reçoit une parenthèse fermante ).

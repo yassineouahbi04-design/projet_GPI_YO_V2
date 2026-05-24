@@ -168,13 +168,13 @@ class RNA_molecule:
 
 
 # ==========================================
-# POINT D'ENTREE DU SCRIPT.
+# EXECUTABILITE DU SCRIPT.
 # ==========================================
 if __name__ == "__main__":
     """ On vérifie qu'un fichier a bien été passé en paramètre dans la console. """
     if len(sys.argv) != 2:
         print(" Error : Incorrect number of arguments.")
-        print(" User : python projet_V1.py <pdb_file>")
+        print(" User : python projet.py <pdb_file>")
         sys.exit(1)
 
     pdb_filename = sys.argv[1]
