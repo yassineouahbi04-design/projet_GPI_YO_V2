@@ -47,4 +47,49 @@ class Atom:
             (self.y - other_atom.y) ** 2 +
             (self.z - other_atom.z) ** 2
         )
-    
+
+
+class Nucleotide:
+    """ On définit ce qu'est un nucléotide de la chaîne d'ARN. On lui donne un type (A, U, G, C), un identifiant numérique (position dans la chaîne) et un dictionnaire pour stocker les atomes qui lui sont associés. """
+    def __init__(self, nt_name, nt_num):
+        self.type = nt_name    # A, U, G, C
+        self.id = nt_num       # Position numérique dans la chaîne.
+        self.atoms = {}        # Dictionnaire stockant les objets atom qui constituent le nucléotide.
+
+    def add_atom(self, atom):
+        """ On ajoute un atome à ce nucléotide en le stockant dans le dictionnaire avec comme clé le nom de l'atome et comme valeur l'objet atom correspondant."""  
+        self.atoms[atom.name] = atom  
+
+
+class RNA_Molecule:
+    """On définit un objet pour gérer l'ensemble de la structure de l'ARN et ses analyses."""
+    def __init__(self):
+        self.nucleotides = {}   # Dictionnaire pour stocker les nucléotides de l'ARN, avec comme clé leur identifiant numérique et comme valeur l'objet Nucleotide correspondant.
+
+    def load_pdb(self, file_path):
+        """ On lit le fichier PDB et extrait uniquement les atomes utiles pour l'ARN. """ 
+        """ On se base sur les spécifications du format PDB pour extraire les informations de manière robuste, en utilisant les positions fixes des champs dans la ligne. On ne traite que les lignes commençant par "ATOM" et on ignore les autres types d'entrées (HETATM, etc.). """ 
+        """ On ne considère que les nucléotides A, U, G, C et on ignore les autres résidus présentes dans le fichier. """
+        try:
+            with open(file_path, 'r') as f:
+                for line in f:
+                    if line.startswith("ATOM"):
+                        """Extraction stricte des données selon les spécifications des colonnes du format PDB officiel"""
+                        atom_name = line[12:16].strip() # On extrait le nom de l'atome en utilisant les positions fixes (12-16) et on supprime les espaces superflus avec strip().
+                        res_name = line[17:20].strip() # On extrait le nom du résidu (nucléotide) en utilisant les positions fixes (17-20) et on supprime les espaces superflus avec strip().
+                        res_num = int(line[22:26].strip()) # On convertit le numéro de résidu en entier pour faciliter les comparaisons et le tri.
+                        """On convertit les coordonnées en flottants pour les calculs de distance ultérieurs."""
+                        x = float(line[30:38].strip())
+                        y = float(line[38:46].strip())
+                        z = float(line[46:54].strip())
+
+                        """On ne traite que les bases principales de l'ARN."""
+                        if res_name in ['A', 'U', 'G', 'C']:
+                            if res_num not in self.nucleotides:
+                                self.nucleotides[res_num] = Nucleotide(res_name, res_num) # On crée un nouvel objet qui prend la classe Nucleotide pour ce résidu s'il n'existe pas déjà dans le dictionnaire.
+                        
+                            """On ajoute l'atome au nucléotide correspondant."""
+                            self.nucleotides[res_num].add_atom(Atom(atom_name, x, y, z))
+        except FileNotFoundError: # En cas d'erreur de lecture du fichier, on affiche un message d'erreur et on termine le programme avec un code de sortie pour indiquer une erreur.
+            print(f"Error: The file '{file_path}' is not found.")
+            sys.exit(1)
